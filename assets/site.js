@@ -39,6 +39,60 @@
     seen.observe(drawing);
   }
 
+  /* Price list: search and category filter. Everything is visible without JavaScript. */
+  var priceBox = document.querySelector('[data-prices]');
+  if (priceBox) {
+    var priceInput = priceBox.querySelector('[data-price-search]');
+    var priceChips = priceBox.querySelectorAll('[data-price-cat]');
+    var priceGroups = priceBox.querySelectorAll('[data-price-group]');
+    var priceStatus = priceBox.querySelector('[data-price-status]');
+    var priceEmpty = priceBox.querySelector('[data-price-empty]');
+    var priceCat = 'all';
+    var applyPrices = function () {
+      var q = priceInput.value.trim().toLowerCase();
+      var words = q ? q.split(/\s+/).map(function (w) {
+        return w.length > 4 ? w.replace(/(es|s)$/, '') : w; /* dresses, zippers, trousers */
+      }) : [];
+      var total = 0;
+      priceGroups.forEach(function (g) {
+        var n = 0;
+        var inCat = priceCat === 'all' || g.getAttribute('data-price-group') === priceCat;
+        g.querySelectorAll('[data-search]').forEach(function (r) {
+          var hay = r.getAttribute('data-search');
+          var show = inCat && words.every(function (w) { return hay.indexOf(w) > -1; });
+          r.hidden = !show; if (show) n++;
+        });
+        g.querySelectorAll('[data-price-sub]').forEach(function (s) {
+          s.hidden = !s.querySelector('[data-search]:not([hidden])');
+        });
+        g.hidden = n === 0;
+        if (n && (q || priceCat !== 'all')) g.open = true;
+        total += n;
+      });
+      priceEmpty.hidden = total > 0;
+      priceStatus.textContent = (q || priceCat !== 'all') ? total + (total === 1 ? ' price shown' : ' prices shown') : '';
+    };
+    priceInput.addEventListener('input', applyPrices);
+    priceChips.forEach(function (b) {
+      b.addEventListener('click', function () {
+        priceCat = b.getAttribute('data-price-cat');
+        priceChips.forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+        applyPrices();
+      });
+    });
+    /* On phones, start with one open group so the list isn't a long scroll. */
+    if (window.matchMedia('(max-width: 719px)').matches) {
+      priceGroups.forEach(function (g, i) { g.open = i === 0; });
+    }
+  }
+
+  /* Quote form: preselect the industry when arriving from the uniform catalogue. */
+  var wanted = new URLSearchParams(location.search).get('industry');
+  var industry = document.getElementById('quote-industry');
+  if (wanted && industry && [].some.call(industry.options, function (o) { return o.value === wanted; })) {
+    industry.value = wanted;
+  }
+
   /* Portfolio filter */
   var filters = document.querySelectorAll('[data-filter]');
   var status = document.querySelector('[data-filter-status]');
@@ -74,7 +128,7 @@
   };
   var NAMES = {
     company: 'your company name', contact: 'your name', email: 'your work email', industry: 'your industry',
-    category: 'a uniform category', quantity: 'an estimated quantity', name: 'your name',
+    category: 'a garment type', quantity: 'an estimated quantity', name: 'your name',
     contactinfo: 'a phone number or email', service: 'the service you need',
     description: 'a short description of what you need'
   };
