@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /
+
+Sitemap: https://belalabdelaziz27-svg.github.io/unique-uniforms-website/sitemap.xml
