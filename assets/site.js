@@ -160,7 +160,8 @@
     form.querySelectorAll('.field').forEach(function (f) {
       var c = f.querySelector('input,select,textarea');
       var v = c.value.trim();
-      if (v) lines.push(f.querySelector('label').firstChild.textContent.trim() + ': ' + v);
+      // data-msg gives the shop a plain label ("Name") instead of the customer-facing one ("Your name")
+      if (v) lines.push((f.getAttribute('data-msg') || f.querySelector('label').firstChild.textContent.trim()) + ': ' + v);
     });
     return lines.join('\n');
   }

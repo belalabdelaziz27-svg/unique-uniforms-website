@@ -201,6 +201,21 @@ html:not(.js) .js-only { display: none !important; }
 .plate { position: relative; margin: 0; overflow: hidden; background: var(--paper-200); border-radius: var(--radius); aspect-ratio: 4 / 5; }
 .plate__art { width: 100%; height: 100%; }
 .plate img { width: 100%; height: 100%; object-fit: cover; }
+/* Photo plates: the 4:5 crop sits on the picture, so a caption can sit underneath */
+.plate--photo { aspect-ratio: auto; overflow: visible; background: none; }
+.plate--photo picture, .plate--photo > img { display: block; aspect-ratio: 4 / 5; width: 100%; overflow: hidden; border-radius: var(--radius); background: var(--paper-200); }
+.plate--photo picture img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.plate--photo > img { height: auto; object-fit: cover; }
+.plate figcaption, .wide-photo figcaption, .hero__photo figcaption { padding-top: var(--s-2); font-size: var(--fs-xs); line-height: 1.45; color: var(--text-muted); }
+.section--cloth .plate figcaption, .craft figcaption, .page-hero .plate figcaption, .hero__photo figcaption { color: var(--on-dark-soft); }
+.wide-photo, .hero__photo { margin: 0; }
+.wide-photo img, .hero__photo img { display: block; width: 100%; height: auto; border-radius: var(--radius); }
+.hero__photo img { box-shadow: 0 28px 56px -28px rgb(0 0 0 / .65); }
+.hero__photo figcaption { text-align: right; }
+.photo-strip { display: grid; gap: var(--s-5) var(--s-4); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 720px) { .photo-strip { grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: var(--s-6) var(--s-5); } }
+.photo-strip + .note { margin-top: var(--s-5); }
+.two-col .plate { max-width: 22rem; margin-top: var(--s-2); }
 .plate__tag { position: absolute; left: .625rem; bottom: .625rem; padding: .1rem .5rem; background: rgb(251 248 242 / .92); color: var(--ink-700); font: 500 .75rem/1.5 var(--font-sans); border-radius: var(--radius); }
 
 /* Section scaffolding */
@@ -281,7 +296,7 @@ html:not(.js) .js-only { display: none !important; }
 .section--paper .slot { background-color: var(--paper-50); }
 .slot__cat { font: 600 var(--fs-sm)/1.3 var(--font-sans); color: var(--accent-strong); }
 .work-item figure { margin: 0; }
-.work-item img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); }
+.work-item > img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); }
 .work-item figcaption { display: grid; gap: .25rem; padding-top: var(--s-3); font-size: var(--fs-sm); color: var(--text-soft); }
 .filters, .form-switch { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-bottom: var(--s-6); }
 .filter { min-height: 2.75rem; padding: .375rem 1rem; background: transparent; border: 1px solid var(--line); border-color: #8E8878; border-radius: 99px; font-size: var(--fs-sm); font-weight: 500; cursor: pointer; transition: background-color var(--t-fast), color var(--t-fast); }
@@ -401,7 +416,7 @@ html:not(.js) .js-only { display: none !important; }
 .swatch__name { display: block; padding-top: var(--s-3); font: 400 1.25rem/1.2 var(--font-serif); }
 .swatch a:hover .swatch__name { text-decoration: underline; text-underline-offset: .2em; }
 @media (min-width: 640px) { .swatches { grid-template-columns: repeat(3, 1fr); } }
-@media (min-width: 1120px) { .swatches { grid-template-columns: repeat(6, 1fr); gap: var(--s-4); } .swatch__name { font-size: 1.125rem; } }
+@media (min-width: 900px) { .swatches { grid-template-columns: repeat(4, 1fr); gap: var(--s-5) var(--s-4); } .swatch__name { font-size: 1.125rem; } }
 
 /* Services on home */
 .section--services { background: var(--paper-100); }
@@ -419,7 +434,7 @@ html:not(.js) .js-only { display: none !important; }
 /* Craft */
 .craft { background: var(--cloth-900); color: var(--on-dark); padding-block: var(--section); }
 .craft__in { display: grid; gap: var(--s-7); align-items: center; }
-.craft__art { max-width: 30rem; }
+.craft__art { max-width: 38rem; }
 .craft__steps { margin-top: var(--s-6); }
 .craft__steps li { padding-block: var(--s-4); border-top: 1px solid rgb(246 242 233 / .2); }
 .craft__steps h3 { margin-bottom: var(--s-2); }
@@ -506,6 +521,8 @@ html:not(.js) .js-only { display: none !important; }
 .price-row .chip { margin-left: 0; }
 .price { grid-area: price; justify-self: end; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .price--tbc { font-weight: 500; color: var(--text-muted); font-size: var(--fs-sm); }
+.price--range { display: inline-flex; flex-direction: column; align-items: flex-end; line-height: 1.25; }
+.price__hint { font-size: .75rem; font-weight: 500; color: var(--text-muted); }
 .price-row__ask { grid-area: ask; justify-self: end; display: inline-flex; align-items: center; gap: .3rem; min-height: 2.75rem; color: var(--accent-strong); font-size: var(--fs-sm); font-weight: 600; text-decoration: underline; text-underline-offset: .2em; }
 .price-row__ask .icon { width: 1.125rem; height: 1.125rem; }
 @media (min-width: 560px) {
@@ -525,7 +542,7 @@ html:not(.js) .js-only { display: none !important; }
 .sector__actions { display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-5); }
 .sector__actions .text-link { display: inline-flex; align-items: center; min-height: 2.75rem; }
 .branding__ask { margin-top: var(--s-5); }
-.work-grid { display: grid; gap: var(--s-5); grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr)); max-width: 64rem; }
+.work-grid { display: grid; gap: var(--s-5); grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr)); }
 .work-item__cap { padding-top: var(--s-3); color: var(--text-soft); font-size: var(--fs-sm); }
 .work-item__cap strong { display: block; font: 400 1.25rem/1.25 var(--font-serif); color: var(--text); }
 
@@ -541,3 +558,9 @@ html:not(.js) .js-only { display: none !important; }
 @media (min-width: 720px) { .pending-sector { grid-template-columns: 1fr auto; align-items: center; } }
 
 .price-terms { display: grid; gap: var(--s-2); margin-bottom: var(--s-6); padding: var(--s-4) var(--s-5); background: var(--bg-alt); border-radius: var(--radius); font-size: var(--fs-sm); }
+/* Phones: two photos per row, so galleries stay scannable */
+@media (max-width: 639px) {
+  .work-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-5) var(--s-3); }
+  .work-item__cap { padding-top: var(--s-2); font-size: var(--fs-xs); }
+  .work-item__cap strong { font-size: 1rem; }
+}
