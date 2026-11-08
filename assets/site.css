@@ -377,8 +377,6 @@ html:not(.js) .js-only { display: none !important; }
 .hero h1 { font-size: var(--fs-hero); line-height: 1.04; }
 .hero .kicker { color: var(--thread-300); }
 .hero .lede { margin-top: var(--s-5); color: var(--on-dark-soft); }
-.hero .lede + .hero__more { margin-top: var(--s-3); max-width: 40rem; font-size: var(--fs-base); line-height: 1.5; color: var(--on-dark-soft); }
-@media (max-width: 479px) { .hero .lede { margin-top: var(--s-4); font-size: 1.0625rem; line-height: 1.45; } .hero .lede + .hero__more { margin-top: var(--s-2); font-size: 1rem; line-height: 1.4; } .hero__text .actions { margin-top: var(--s-4); } }
 .hero .btn--ghost { border-color: var(--on-dark-soft); color: var(--on-dark); }
 .hero .btn--ghost:hover { background: var(--on-dark); color: var(--cloth-900); }
 .hero__text { padding-bottom: var(--s-4); }
